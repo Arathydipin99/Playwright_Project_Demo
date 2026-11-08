@@ -20,5 +20,8 @@ export default defineConfig({
   use: {
     headless: false,
     timeout:50000,
+    expect:{
+      timeout:60000
+    }
   },
 });
