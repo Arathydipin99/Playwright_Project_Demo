@@ -1,5 +1,5 @@
 import {test, expect} from '@playwright/test'
-test("frames", async ({page})=>{
+test("downloadtest", async ({page})=>{
     await page.goto("https://demoqa.com/upload-download")
     const downloadbtn=await page.locator("#downloadButton")
     
@@ -9,6 +9,14 @@ test("frames", async ({page})=>{
     ])
     await downloadFile.saveAs('D:\\download file\\file.jpeg')
 
+    await page.waitForTimeout(3000)
+
+})
+
+test.only("uploadtest", async({page})=>{
+    await page.goto("https://demoqa.com/upload-download")
+    const uploadFile=page.locator("#uploadFile")
+    await uploadFile.setInputFiles("D:\\download file\\file.jpeg")
     await page.waitForTimeout(3000)
 
 })
