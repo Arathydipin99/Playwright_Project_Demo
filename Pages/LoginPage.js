@@ -1,19 +1,48 @@
-class LoginPage {
-    constructor() {
+import {expect} from '@playwright/test'
+export class LoginPage {
+    constructor(page) {
         this.username = page.locator("#user-name")
         this.passwrd = page.locator("#password")
         this.loginBtn = page.getByRole("button", { name: 'Login' })
-        this.productTitle = page.locator(".inventory_item_name")
-        this.filterDropdown = page.locator(".product_sort_container")
-        this.priceList= page.locator(".inventory_item_price")
-        this.cartLink=page.locator(".shopping_cart_link")
-        this.checkOutBtn=page.locator(".btn.btn_action.btn_medium.checkout_button ")
-        this.firstName= page.locator("#first-name")
-        this.lastName=page.locator("#last-name")
-        this.zip=page.locator("#postal-code")
-        this.continueBtn=page.locator(".submit-button.btn.btn_primary.cart_button.btn_action")
-        this.finishBtn=page.locator("#finish")
-
+        this.page = page
 
     }
+
+    async navigatePage() {
+        await this.page.goto("https://www.saucedemo.com")
+
+    }
+    async validateWrongPswrd(uName,invalidpswrd) {
+        await this.username.fill(uName)
+        await this.passwrd.fill(invalidpswrd)
+        await this.loginBtn.click()
+        const errorMessage = await this.page.locator(".error-message-container.error").textContent()
+        console.log("Error message displayed is :" + errorMessage)
+        await expect(this.page.locator(".error-message-container.error")).toHaveText(errorMessage)
+        await expect(this.page.locator(".error-message-container.error")).toBeVisible()
+
+    }
+
+    //login scenario with empty username and empty password
+
+    async emptyCredentials() {
+        await this.username.fill("")
+        await this.passwrd.fill("")
+        await this.loginBtn.click()
+        const errorMessage2 = await this.page.locator(".error-message-container.error").textContent()
+        console.log("Error message displayed is :" + errorMessage2)
+        await expect(this.page.locator(".error-message-container.error")).toHaveText(errorMessage2)
+        await expect(this.page.locator(".error-message-container.error")).toBeVisible()
+
+    }
+    
+    //login with valid credentials
+    async validCredentials(uName,pWord) {
+        await this.username.fill(uName)
+        await this.passwrd.fill(pWord)
+        await this.loginBtn.click()
+        
+
+    }
+
 }
